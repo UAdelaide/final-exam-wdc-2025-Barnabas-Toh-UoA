@@ -159,12 +159,13 @@ let db;
     app.get('/api/dogs', async (req, res) => {
       try {
         const [rows] = await db.execute(`
-          SELECT Dogs.name AS dog_name, Dogs.size, Users.username AS owner_username
+          SELECT Dogs.dog_id, Dogs.name, Dogs.size, Dogs.owner_id, Users.username AS owner_username
           FROM Dogs
           JOIN Users ON Dogs.owner_id = Users.user_id
         `);
         res.json(rows);
       } catch (err) {
+        console.error('SQL Error:', err);
         res.status(500).json({ error: 'Failed to fetch dogs' });
       }
     });
