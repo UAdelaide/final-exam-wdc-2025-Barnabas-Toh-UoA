@@ -26,10 +26,35 @@
       <button type="submit" class="btn btn-primary">Log In</button>
     </form>
     <div v-if="error" class="alert alert-danger">{{ error }}</div>
+
+    <div class="container mt-5">
+      <h2 class="text-secondary">All Registered Dogs</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Dog ID</th>
+            <th>Name</th>
+            <th>Size</th>
+            <th>Owner ID</th>
+            <th>Photo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="dog in dogs" :key="dog.dog_id">
+            <td>{{ dog.dog_id }}</td>
+            <td>{{ dog.name }}</td>
+            <td>{{ dog.size }}</td>
+            <td>{{ dog.owner_id }}</td>
+            <td><img :src="dog.photo" alt="Dog photo" class="img-thumbnail" style="width: 100px; height: 100px;"></td>
+          </tr>
+        </tbody>
+      </table>
+      <div v-if="error" class="alert alert-danger">{{ error }}</div>
+    </div>
   </div>
 
   <script>
-    const { createApp, ref } = Vue;
+    const { createApp, ref, onMounted } = Vue;
 
     createApp({
       data() {
@@ -66,6 +91,39 @@
             this.error = err.message; // Display error message
           }
         }
+      },
+      setup() {
+        const dogs = ref([]);
+        const error = ref('');
+
+        async function loadDogs() {
+          try {
+            const res = await fetch('/api/dogs');
+            if (!res.ok) throw new Error('Failed to fetch dogs');
+            const dogData = await res.json();
+
+            // Fetch random photos for each dog
+            for (const dog of dogData) {
+              const photoRes = await fetch('https://dog.ceo/api/breeds/image/random');
+              const photoData = await photoRes.json();
+              dog.photo = photoData.message; // Add photo URL to each dog object
+            }
+
+            dogs.value = dogData;
+          } catch (err) {
+            error.value = err.message;
+          }
+        }
+
+        onMounted(() => {
+          loadDogs();
+        });
+
+        return {
+          dogs,
+          error,
+          loadDogs
+        };
       }
     }).mount('#app');
   </script>
