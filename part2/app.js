@@ -195,7 +195,7 @@ let db;
     });
 
   } catch (err) {
-    console.error('❌ Database setup failed:', err);
+    console.error('Database setup failed:', err);
   }
 })();
 
