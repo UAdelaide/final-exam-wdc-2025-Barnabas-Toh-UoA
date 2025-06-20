@@ -5,6 +5,14 @@ require('dotenv').config();
 const app = express();
 const mysql = require('mysql2/promise');
 
+const session = require('express-session');
+
+app.use(session({
+  secret: 'walk-doggy-secret',
+  resave: false,
+  saveUninitialized: true
+}));
+
 // Middleware
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '/public')));
