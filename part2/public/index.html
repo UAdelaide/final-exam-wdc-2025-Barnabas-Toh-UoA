@@ -112,23 +112,22 @@
             dogs.value = dogData; // Ensure all fields (dog_id, owner_id, etc.) are stored
           } catch (err) {
             error.value = err.message;
-          } error.value = err.message;
-        } }
+          }
         }
+
         onMounted(() => {
-          loadDogs();=> {
-        });oadDogs();
+          loadDogs();
         });
+
         return {
-          dogs,{
+          dogs,
           error,
           loadDogs
-        };loadDogs
-      } };
+        };
+      }
     }).mount('#app');
-  </script>t('#app');
   </script>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>pt src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</html>
+</body>
 </html>
