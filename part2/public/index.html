@@ -13,17 +13,60 @@
     <h1 class="mb-4 text-primary">{{ message }}</h1>
     <p class="lead">Connect with trusted walkers for your beloved dog!</p>
 
+    <!-- Login Form -->
+    <form @submit.prevent="login" class="mb-4">
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input v-model="form.username" type="text" id="username" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input v-model="form.password" type="password" id="password" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Log In</button>
+    </form>
+    <div v-if="error" class="alert alert-danger">{{ error }}</div>
+
+    <!-- Dashboard Links -->
     <a href="owner-dashboard.html" class="btn btn-outline-primary me-2">Owner Dashboard</a>
     <a href="walker-dashboard.html" class="btn btn-outline-success">Walker Dashboard</a>
   </div>
 
   <script>
-    const { createApp } = Vue;
+    const { createApp, ref } = Vue;
+
     createApp({
       data() {
         return {
-          message: 'Welcome to the Dog Walking Service!'
+          message: 'Welcome to the Dog Walking Service!',
+          form: { username: '', password: '' },
+          error: ''
         };
+      },
+      methods: {
+        async login() {
+          try {
+            const res = await fetch('/login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(this.form)
+            });
+
+            if (!res.ok) {
+              const result = await res.json();
+              throw new Error(result.error || 'Login failed');
+            }
+
+            const result = await res.json();
+            if (result.role === 'owner') {
+              window.location.href = '/owner-dashboard.html';
+            } else if (result.role === 'walker') {
+              window.location.href = '/walker-dashboard.html';
+            }
+          } catch (err) {
+            this.error = err.message;
+          }
+        }
       }
     }).mount('#app');
   </script>
