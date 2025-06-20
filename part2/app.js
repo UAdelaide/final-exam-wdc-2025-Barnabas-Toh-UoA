@@ -18,7 +18,8 @@ let db;
     const connection = await mysql.createConnection({
       host: 'localhost',
       user: 'root',
-      password: ''
+      password: '',
+      port: 8081 // Updated port
     });
 
     await connection.query('CREATE DATABASE IF NOT EXISTS dogwalks');
@@ -28,7 +29,8 @@ let db;
       host: 'localhost',
       user: 'root',
       password: '',
-      database: 'dogwalks'
+      database: 'dogwalks',
+      port: 8081 // Updated port
     });
 
     // === TABLE CREATION ===
