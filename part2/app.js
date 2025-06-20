@@ -44,7 +44,7 @@ let db;
       host: 'localhost',
       user: 'root',
       password: '',
-      database: 'dogwalks'
+      database: 'DogWalkService'
     });
 
     // === Tables ===
