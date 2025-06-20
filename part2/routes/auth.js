@@ -15,7 +15,7 @@ router.post('/login', async (req, res) => {
     );
 
     if (rows.length === 0) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ error: 'Invalid credentials' }); // Ensure JSON response for errors
     }
 
     const user = rows[0];
@@ -25,10 +25,10 @@ router.post('/login', async (req, res) => {
       role: user.role
     };
 
-    res.json({ role: user.role });
+    res.json({ role: user.role }); // Return JSON response for success
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Login failed' });
+    res.status(500).json({ error: 'Login failed' }); // Ensure JSON response for server errors
   }
 });
 

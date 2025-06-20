@@ -54,7 +54,7 @@
 
             if (!res.ok) {
               const result = await res.json();
-              throw new Error(result.error || 'Login failed');
+              throw new Error(result.error || 'Login failed'); // Handle JSON error responses
             }
 
             const result = await res.json();
@@ -67,7 +67,7 @@
               window.location.href = '/walker-dashboard.html';
             }
           } catch (err) {
-            this.error = err.message;
+            this.error = err.message; // Display error message
           }
         }
       }
