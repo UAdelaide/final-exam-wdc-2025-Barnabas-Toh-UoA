@@ -33,6 +33,9 @@
       </div>
     </div>
     <p v-else>No available walk requests at the moment.</p>
+
+    <!-- Logout button -->
+    <button type="button" class="btn btn-danger mb-4" @click="logout">Logout</button>
   </div>
 
   <script>
@@ -74,6 +77,16 @@
           }
         }
 
+        async function logout() {
+          try {
+            const res = await fetch('/api/users/logout', { method: 'POST' });
+            if (!res.ok) throw new Error('Logout failed');
+            window.location.href = '/';
+          } catch (err) {
+            alert(err.message);
+          }
+        }
+
         onMounted(() => {
           loadWalkRequests();
         });
@@ -82,7 +95,8 @@
           walks,
           message,
           error,
-          applyToWalk
+          applyToWalk,
+          logout
         };
       }
     }).mount('#app');
