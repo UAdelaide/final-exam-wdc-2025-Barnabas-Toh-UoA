@@ -10,7 +10,7 @@ router.post('/login', async (req, res) => {
 
   try {
     const [rows] = await db.execute(
-      'SELECT * FROM Users WHERE username = ? AND password_hash = ?',
+      'SELECT user_id, username, role FROM Users WHERE username = ? AND password_hash = ?',
       [username, password]
     );
 
@@ -25,14 +25,14 @@ router.post('/login', async (req, res) => {
       role: user.role
     };
 
-    // Redirect based on role
-    if (user.role === 'owner') {
-      res.redirect('/owner-dashboard.html');
-    } else {
-      res.redirect('/walker-dashboard.html');
-    }
-
+    res.json({ role: user.role });
   } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Login failed' });
+  }
+});
+
+module.exports = router;
     console.error(err);
     res.status(500).json({ error: 'Login failed' });
   }

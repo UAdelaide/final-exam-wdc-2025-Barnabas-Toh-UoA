@@ -58,6 +58,9 @@
             }
 
             const result = await res.json();
+            this.error = '';
+
+            // Redirect based on role stored in the session
             if (result.role === 'owner') {
               window.location.href = '/owner-dashboard.html';
             } else if (result.role === 'walker') {
